@@ -24,13 +24,22 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
   var active_tasks_snapshot="", finished_tasks_list=undefined, tasks_cnt_snapshot="", select_lock=false, need_refresh=false;
   var auto_refresh=false;
 
+  function get_added(result) {
+    if (typeof result == "string")
+      return result;
+    else if (typeof result.result == "string")
+      return result.id+": "+result.result;
+    else if (result.result && result.result.message)
+      return result.id+": "+result.result.message;
+  }
+
   function get_error(result) {
     if (typeof result == "string")
       return result;
     else if (typeof result.error == "string")
-      return result.error;
+      return result.id+": "+result.error;
     else if (result.error && result.error.message)
-      return result.error.message;
+      return result.id+": "+result.error.message;
   }
 
   function default_error(result) {
@@ -249,6 +258,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.refresh();
           $("#add-task-modal").modal('hide');
           YAAW.add_task.clean();
+          ARIA2.main_alert("alert-success", "add task success.", 3000);
         }, 
         function(result) {
           //console.debug(result);
@@ -272,8 +282,11 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         function(result) {
           //console.debug(result);
 
+          var added = new Array();
           var error = new Array();
           $.each(result, function(i, n) {
+            var added_msg = get_added(n);
+            if (added_msg) added.push(added_msg);
             var error_msg = get_error(n);
             if (error_msg) error.push(error_msg);
           });
@@ -282,11 +295,17 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             ARIA2.refresh();
             $("#add-task-modal").modal('hide');
             YAAW.add_task.clean();
+            ARIA2.main_alert("alert-success", "add task success.", 3000);
           } else {
-            var error_msg = error.join("<br />");
+            var error_msg = "<br />"+error.join("<br />");
             $("#add-task-alert .alert-msg").html(error_msg);
             $("#add-task-alert").show();
             console.warn("add task error: "+error_msg);
+            if (added.length > 0) {
+              var added_msg = "<br />"+added.join("<br />");
+              $("#add-task-added .alert-msg").html(added_msg);
+              $("#add-task-added").show();
+            }
           }
         }
       );
@@ -301,6 +320,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.refresh();
           $("#add-task-modal").modal('hide');
           YAAW.add_task.clean();
+          ARIA2.main_alert("alert-success", "add task success.", 3000);
         }, 
         function(result) {
           //console.debug(result);
@@ -322,6 +342,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.refresh();
           $("#add-task-modal").modal('hide');
           YAAW.add_task.clean();
+          ARIA2.main_alert("alert-success", "add task success.", 3000);
         }, 
         function(result) {
           //console.debug(result);
@@ -335,6 +356,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     },
 
     restart_task: function(gids) {
+      if (!$.isArray(gids)) gids = [gids];
       $.each(gids, function(n, gid) {
         var result = $("#task-gid-"+gid).data("raw");
         var uris = [];
@@ -490,6 +512,13 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         else
           result.progress = (result.completedLength * 1.0 / result.totalLength * 100).toFixed(2);
         result.eta = (result.totalLength - result.completedLength)/result.downloadSpeed;
+
+        result.progressStatus = {
+          "active"  : "progress-striped",
+          "complete": "progress-striped",
+          "removed" : "progress-warning",
+          "error"   : "progress-danger"
+        }[result.status];
 
         result.downloadSpeed = parseInt(result.downloadSpeed);
         result.uploadSpeed = parseInt(result.uploadSpeed);
