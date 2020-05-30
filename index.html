@@ -64,17 +64,13 @@
               <li><a href="#" id="btnSelectWaiting">Select Waiting</a></li>
               <li><a href="#" id="btnSelectPaused" >Select Paused</a></li>
               <li><a href="#" id="btnSelectStopped" >Select Stopped</a></li>
+              <li><a href="#" id="btnSelectCompleted">Select Completed</a></li>
             </ul>
           </div>
         </div>
 
         <div class="pull-left" id="not-selected-grp">
           <div class="pull-left btn-group">
-            <a class="btn" id="add-task-btn" data-toggle="modal" href="#add-task-modal" rel="tooltip" title="Add Task">
-              <i class="icon-plus"></i> Add
-            </a>
-          </div>
-          <div class="pull-left btn-group" id="do-all-btn">
             <a href="#" id="btnStartAll" class="btn" id="unpause-all" rel="tooltip" title="Start All">
               <i class="icon-forward"></i>
             </a>
@@ -85,10 +81,15 @@
               <i class="icon-trash"></i>
             </a>
           </div>
+          <div class="pull-left btn-group">
+            <a class="btn" id="add-task-btn" data-toggle="modal" href="#add-task-modal" rel="tooltip" title="Add Task">
+              <i class="icon-plus"></i> Add
+            </a>
+          </div>
         </div>
 
         <div class="pull-left hide" id="selected-grp">
-          <div class="btn-group">
+          <div class="pull-left btn-group">
             <a href="#" id="btnUnPause" class="btn" rel="tooltip" title="Start">
               <i class="icon-play"></i>
             </a>
@@ -99,9 +100,11 @@
               <i class="icon-remove"></i>
             </a>
           </div>
-          <!--<button class="btn pull-left" id="info-btn" rel="tooltip" title="Task Info">-->
-            <!--<i class="icon-info-sign"></i> Info-->
-          <!--</button>-->
+          <!--<div class="pull-left btn-group">-->
+            <!--<a class="btn" id="info-btn" rel="tooltip" title="Task Info">-->
+              <!--<i class="icon-info-sign"></i> Info-->
+            <!--</a>-->
+          <!--</div>-->
         </div>
 
         <div class="pull-right" id="other-grp">
@@ -148,7 +151,7 @@
       <li class="task-restart"><a href="#" id="menuRestart" >ReStart</a></li>
       <li class="task-start"><a href="#" id="menuStart" >Start</a></li>
       <li class="task-pause"><a href="#" id="menuPause" >Pause</a></li>
-      <li><a href="#" id="menuRemove" >Remove</a></li>
+      <li class="task-remove"><a href="#" id="menuRemove" >Remove</a></li>
       <li class="task-move divider"></li>
       <li class="task-move"><a href="#" id="menuMoveTop" >MoveTop</a></li>
       <li class="task-move"><a href="#" id="menuMoveUp" >MoveUp</a></li>
@@ -162,13 +165,18 @@
       <h3>Add Task</h3>
     </div>
     <div class="modal-body">
+      <div id="add-task-added" class="alert alert-success hide">
+        <a href="#" id="closeAdded" class="close">×</a>
+        <strong>Added:</strong> <span class="alert-msg"></span>
+      </div>
       <div id="add-task-alert" class="alert alert-error hide">
         <a href="#" id="closeAlert"  class="close">×</a>
         <strong>Error:</strong> <span class="alert-msg"></span>
       </div>
       <form id="add-task-uri">
         <div class="input-append">
-          <input type="text" name="uri" id="uri-input" class="input-clear" placeholder="HTTP, FTP or Magnet" /><span><a id="torrent-up-btn" class="btn">Upload Torrent<input type="file" id="torrent-up-input" /></a></span>
+          <input type="text" name="uri" id="uri-input" class="input-clear" placeholder="HTTP, FTP or Magnet" />
+          <span><a id="torrent-up-btn" class="btn">Upload Torrent<input type="file" id="torrent-up-input" /></a></span>
         </div>
         <textarea id="uri-textarea" rows=5 class="input-clear hide" placeholder="HTTP, FTP or Magnet"></textarea>
       </form>
@@ -262,7 +270,7 @@
           </div>
         </div>
         <div class="right-area">
-          <div class="progress">
+          <div class="progress {{progressStatus}}">
             <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
           </div>
           <div class="progress-info">
@@ -299,7 +307,7 @@
             {{#uploadLength}}<span>(up {{#_v.format_size}}{{uploadLength}}{{/_v.format_size}})</span>{{/uploadLength}}
           </div>
           <div class="pull-right">
-            <div class="progress">
+            <div class="progress {{progressStatus}}">
               <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
             </div>
           </div>
@@ -335,7 +343,7 @@
     </script>      
 
     <script id="ib-status-tpl" type="text/mustache-template">
-      <ul>
+      <ul class="unstyled">
         {{#uris}}<li><strong>Url: </strong><a target=_blank href="{{.}}">{{.}}</a>{{/uris}}
         {{#infoHash}}<li><strong>Infohash: </strong><a target=_blank href="magnet:?xt=urn:btih:{{infoHash}}">{{infoHash}}</a></li>{{/infoHash}}
         <li><strong>Size: </strong>{{#_v.format_size}}{{totalLength}}{{/_v.format_size}} ({{numPieces}} @ {{#_v.format_size}}{{pieceLength}}{{/_v.format_size}})</li>
@@ -373,7 +381,12 @@
 
     <script id="ib-peers-tpl" type="text/mustache-template">
       {{#.}}
-      <li><span class="ip_port">{{ip}}:{{port}} - <span class="peerid">{{#_v.format_peerid}}{{peerId}}{{/_v.format_peerid}}</span></span> <b>{{#_v.bitfield_to_percent}}{{bitfield}}{{/_v.bitfield_to_percent}}%</b> <i class="icon-download"></i>{{#_v.format_size}}{{downloadSpeed}}{{/_v.format_size}}/s <i class="icon-upload"></i>{{#_v.format_size}}{{uploadSpeed}}{{/_v.format_size}}/s</li>
+      <li>
+        <span class="ip_port">{{ip}}:{{port}}</span> - <span class="peerid">{{#_v.format_peerid}}{{peerId}}{{/_v.format_peerid}}</span>
+        <b>{{#_v.bitfield_to_percent}}{{bitfield}}{{/_v.bitfield_to_percent}}%</b>
+        <i class="icon-download"></i>{{#_v.format_size}}{{downloadSpeed}}{{/_v.format_size}}/s
+        <i class="icon-upload"></i>{{#_v.format_size}}{{uploadSpeed}}{{/_v.format_size}}/s
+      </li>
       {{/.}}
     </script>
 
