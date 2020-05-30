@@ -91,6 +91,9 @@ var YAAW = (function() {
       $("#btnSelectStopped").live("click", function() {
         YAAW.tasks.selectStopped();
       });
+      $("#btnSelectCompleted").live("click", function() {
+        YAAW.tasks.selectCompleted();
+      });
       $("#btnStartAll").live("click", function() {
         ARIA2.unpause_all();
       });
@@ -98,10 +101,13 @@ var YAAW = (function() {
         ARIA2.pause_all();
       });
       $("#btnRemoveFinished").live("click", function() {
-        ARIA2.purge_download_result();
+        YAAW.tasks.removeCompleted();
       });
       $("#closeAlert").live("click", function() {
         $('#add-task-alert').hide();
+      });
+      $("#closeAdded").live("click", function() {
+        $('#add-task-added').hide();
       });
       $("#menuMoveTop").live("click", function() {
         if (selected_tasks) {
@@ -136,16 +142,36 @@ var YAAW = (function() {
         }
       });
       $("#menuRestart").live("click", function() {
-        YAAW.contextmenu.restart();
+        if (selected_tasks) {
+          YAAW.tasks.restart();
+          YAAW.tasks.unSelectAll();
+        } else {
+          YAAW.contextmenu.restart();
+        }
       });
       $("#menuStart").live("click", function() {
-        YAAW.contextmenu.unpause();
+        if (selected_tasks) {
+          YAAW.tasks.unpause();
+          YAAW.tasks.unSelectAll();
+        } else {
+          YAAW.contextmenu.unpause();
+        }
       });
       $("#menuPause").live("click", function() {
-        YAAW.contextmenu.pause();
+        if (selected_tasks) {
+          YAAW.tasks.pause();
+          YAAW.tasks.unSelectAll();
+        } else {
+          YAAW.contextmenu.pause();
+        }
       });
       $("#menuRemove").live("click", function() {
-        YAAW.contextmenu.remove();
+        if (selected_tasks) {
+          YAAW.tasks.remove();
+          YAAW.tasks.unSelectAll();
+        } else {
+          YAAW.contextmenu.remove();
+        }
       });
 
 
@@ -330,7 +356,7 @@ var YAAW = (function() {
         }
 
         function render(f) {
-          var content = '<ul>';
+          var content = '<ul class="unstyled">';
 
           for (var k in f) {
             if (f[k]['_file'] !== undefined) {
@@ -686,12 +712,40 @@ var YAAW = (function() {
         this.check_select();
       },
 
+      selectCompleted: function() {
+        var _this = this;
+        this.unSelectAll(true);
+        $("#stopped-tasks-table .task[data-status=complete]").each(function(i, n) {
+          _this.select(n);
+        });
+        this.check_select();
+      },
+
+      removeCompleted: function() {
+        var gids = new Array();
+        $("#stopped-tasks-table .task[data-status=complete]").each(function(i, n) {
+          gids.push(n.getAttribute("data-gid"));
+        });
+        if (gids.length) ARIA2.remove_result(gids);
+      },
+
       getSelectedGids: function() {
         var gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
           gids.push(n.getAttribute("data-gid"));
         });
         return gids;
+      },
+
+      restart: function() {
+        var gids = new Array();
+        $(".tasks-table .task.selected").each(function(i, n) {
+          var status = n.getAttribute("data-status");
+          if (status == "removed" || status == "complete" || status == "error") {
+            gids.push(n.getAttribute("data-gid"));
+          }
+        });
+        if (gids.length) ARIA2.restart_task(gids);
       },
 
       pause: function() {
