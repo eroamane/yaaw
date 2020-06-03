@@ -359,6 +359,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       if (!$.isArray(gids)) gids = [gids];
       $.each(gids, function(n, gid) {
         var result = $("#task-gid-"+gid).data("raw");
+        var status = result.status;
         var uris = [];
         $.each(result.files, function(n, e) {
           if (e.uris.length)
@@ -368,7 +369,8 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.request("getOption", [gid], function(result) {
             var options = result.result;
             ARIA2.madd_task(uris, options);
-            ARIA2.remove_result(gid)
+            if (status == "error" || status == "removed")
+              ARIA2.remove_result(gid);
           });
         }
       });
