@@ -258,7 +258,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.refresh();
           $("#add-task-modal").modal('hide');
           YAAW.add_task.clean();
-          ARIA2.main_alert("alert-success", "add task success.", 3000);
+          ARIA2.main_alert("alert-success", "Task added", 3000);
         }, 
         function(result) {
           //console.debug(result);
@@ -295,7 +295,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             ARIA2.refresh();
             $("#add-task-modal").modal('hide');
             YAAW.add_task.clean();
-            ARIA2.main_alert("alert-success", "add task success.", 3000);
+            ARIA2.main_alert("alert-success", "Task added", 3000);
           } else {
             var error_msg = "<br />"+error.join("<br />");
             $("#add-task-alert .alert-msg").html(error_msg);
@@ -320,7 +320,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.refresh();
           $("#add-task-modal").modal('hide');
           YAAW.add_task.clean();
-          ARIA2.main_alert("alert-success", "add task success.", 3000);
+          ARIA2.main_alert("alert-success", "Task added", 3000);
         }, 
         function(result) {
           //console.debug(result);
@@ -342,7 +342,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.refresh();
           $("#add-task-modal").modal('hide');
           YAAW.add_task.clean();
-          ARIA2.main_alert("alert-success", "add task success.", 3000);
+          ARIA2.main_alert("alert-success", "Task added", 3000);
         }, 
         function(result) {
           //console.debug(result);
@@ -365,6 +365,14 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           if (e.uris.length)
             uris.push(e.uris[0].uri);
         });
+        if (result.bittorrent) {
+          var magnet_link = "magnet:?xt=urn:btih:"+result.infoHash;
+          if (result.bittorrent.info.name)
+            magnet_link += "&dn="+result.bittorrent.info.name;
+          if (result.bittorrent.announceList.length)
+            magnet_link += "&tr="+result.bittorrent.announceList.join("&tr=");
+          uris.push(magnet_link);
+        }
         if (uris.length > 0) {
           ARIA2.request("getOption", [gid], function(result) {
             var options = result.result;
@@ -543,23 +551,20 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         }
       );
     },
-    
-    change_selected_pos: function(gids, pos, how) {
-      for (var gid of gids) {
-        new Promise(function(resolve) {
-          ARIA2.request("changePosition", [gid, pos, how],
-            function(result) {
-              //console.debug(result);
 
-              if (gid == gids[gids.length -1]) {
-                main_alert("alert-info", "Moved", 1000);
-                ARIA2.refresh();
-              }
-              resolve();
-            }
-          );
-        })
-      }
+    change_selected_pos: function(gids, pos, how) {
+      var params = [];
+      $.each(gids, function(i, n) {
+        params.push([n, pos, how]);
+      });
+      ARIA2.batch_request("changePosition", params,
+        function(result) {
+          //console.debug(result);
+
+          main_alert("alert-info", "Moved", 1000);
+          ARIA2.refresh();
+        }
+      );
     },
 
     pause: function(gids) {
