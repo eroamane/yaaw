@@ -103,11 +103,11 @@ var YAAW = (function() {
       $("#btnRemoveFinished").live("click", function() {
         YAAW.tasks.removeCompleted();
       });
-      $("#closeAlert").live("click", function() {
-        $('#add-task-alert').hide();
-      });
       $("#closeAdded").live("click", function() {
         $('#add-task-added').hide();
+      });
+      $("#closeAlert").live("click", function() {
+        $('#add-task-alert').hide();
       });
       $("#menuMoveTop").live("click", function() {
         if (selected_tasks) {
@@ -174,6 +174,15 @@ var YAAW = (function() {
         }
       });
 
+      $("body").live("dragover", function(e) {
+        e.preventDefault();  
+        e.stopPropagation();
+      });
+      $("body").live("drop", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        YAAW.drop_add_task.submit(e);
+      });
 
       $("[rel=tooltip]").tooltip({"placement": "bottom"});
 
@@ -616,6 +625,23 @@ var YAAW = (function() {
         };
         reader.readAsDataURL(file);
       },
+    },
+
+    drop_add_task: {
+      submit: function(event) {
+        var uri = event.originalEvent.dataTransfer.getData("text").split("\n");
+        var options = {};
+        $("#add-task-option input[name], #add-task-option textarea[name]").each(function(i, n) {
+          var name = n.getAttribute("name");
+          var value = (n.type == "checkbox" ? n.checked : n.value);
+          if (name && value) {
+            options[name] = String(value);
+          }
+        });
+        if (uri) {
+          ARIA2.madd_task(uri, options);
+        }
+      }
     },
 
     tasks: {
