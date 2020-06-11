@@ -271,10 +271,10 @@ body {
 }
 @media (min-width: 551px) and (max-width: 980px) {
     #active-tasks .left-area {
-        margin-right: 186px;
+        margin-right: 246px;
     }
     #active-tasks .right-area {
-        width: 170px;
+        width: 230px;
     }
 
     #other-tasks .left-area {
@@ -292,23 +292,23 @@ body {
 }
 @media (min-width: 980px) {
     #active-tasks .left-area {
-        margin-right: 286px;
+        margin-right: 316px;
     }
     #active-tasks .right-area {
-        width: 270px;
+        width: 300px;
     }
 
     #other-tasks .left-area {
-        margin-right: 416px;
+        margin-right: 316px;
     }
     #other-tasks .right-area {
-        width: 400px;
+        width: 300px;
     }
     #other-tasks .task-info {
         width: 190px;
     }
     #other-tasks .progress {
-        width: 200px;
+        width: 100px;
     }
 }
 
