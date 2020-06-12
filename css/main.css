@@ -18,10 +18,15 @@
  *
  */
 
+html {
+  height: 100%;
+}
 body {
   background-color: #EEE;
-  margin: 0 20px;
+  padding-right: 20px;
+  padding-left: 20px;
 }
+
 .container {
   width: unset;
 }
