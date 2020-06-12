@@ -174,11 +174,11 @@ var YAAW = (function() {
         }
       });
 
-      $("body").live("dragover", function(e) {
+      $("html").live("dragover", function(e) {
         e.preventDefault();  
         e.stopPropagation();
       });
-      $("body").live("drop", function(e) {
+      $("html").live("drop", function(e) {
         e.preventDefault();
         e.stopPropagation();
         YAAW.drop_add_task.submit(e);
