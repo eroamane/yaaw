@@ -181,7 +181,7 @@ var YAAW = (function() {
       $("html").live("drop", function(e) {
         e.preventDefault();
         e.stopPropagation();
-        YAAW.drop_add_task.submit(e);
+        YAAW.add_task.ondrop(e);
       });
 
       $("[rel=tooltip]").tooltip({"placement": "bottom"});
@@ -604,6 +604,21 @@ var YAAW = (function() {
         }
       },
 
+      ondrop: function(event) {
+        var uri = event.originalEvent.dataTransfer.getData("text").split("\n");
+        var options = {};
+        $("#add-task-option input[name], #add-task-option textarea[name]").each(function(i, n) {
+          var name = n.getAttribute("name");
+          var value = (n.type == "checkbox" ? n.checked : n.value);
+          if (name && value) {
+            options[name] = String(value);
+          }
+        });
+        if (uri) {
+          ARIA2.madd_task(uri, options);
+        }
+      },
+
       clean: function() {
         $("#uri-input").attr("placeholder", "HTTP, FTP or Magnet");
         $("#add-task-modal .input-clear").val("");
@@ -625,23 +640,6 @@ var YAAW = (function() {
         };
         reader.readAsDataURL(file);
       },
-    },
-
-    drop_add_task: {
-      submit: function(event) {
-        var uri = event.originalEvent.dataTransfer.getData("text").split("\n");
-        var options = {};
-        $("#add-task-option input[name], #add-task-option textarea[name]").each(function(i, n) {
-          var name = n.getAttribute("name");
-          var value = (n.type == "checkbox" ? n.checked : n.value);
-          if (name && value) {
-            options[name] = String(value);
-          }
-        });
-        if (uri) {
-          ARIA2.madd_task(uri, options);
-        }
-      }
     },
 
     tasks: {
