@@ -25,7 +25,6 @@ body {
     height: 100%;
     padding: 0;
 }
-
 .container {
     height: 100%;
     padding: 0 20px;
@@ -181,9 +180,11 @@ body {
     margin-right: 8px;
 }
 
-.task .task-info,
-.task .progress-info {
+.task .task-info {
     margin-top: 4px;
+}
+.task .progress-info {
+    margin-top: 5px;
 }
 .task .progress {
     margin: 1px 0;
@@ -311,7 +312,7 @@ body {
         width: 300px;
     }
     #other-tasks .task-info {
-        width: 190px;
+        width: 200px;
     }
     #other-tasks .progress {
         width: 100px;
