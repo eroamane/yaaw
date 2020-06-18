@@ -781,9 +781,8 @@ var YAAW = (function() {
         var gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
           var status = n.getAttribute("data-status");
-          if (status == "removed" || status == "complete" || status == "error") {
+          if (status == "removed" || status == "complete" || status == "error")
             gids.push(n.getAttribute("data-gid"));
-          }
         });
         if (gids.length) ARIA2.restart_task(gids);
       },
