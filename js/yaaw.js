@@ -577,6 +577,18 @@ var YAAW = (function() {
             return status_icon_map[text] || "";
           };
         },
+
+        status_progress: function() {
+          var progress_bar_map = {
+            active  : "progress-striped",
+            complete: "progress-success",
+            removed : "progress-warning",
+            error   : "progress-danger"
+          };
+          return function(text) {
+            return progress_bar_map[text] || "";
+          };
+        },
       },
     },
 
