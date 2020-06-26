@@ -91,9 +91,6 @@ var YAAW = (function() {
       $("#btnSelectStopped").live("click", function() {
         YAAW.tasks.selectStopped();
       });
-      $("#btnSelectCompleted").live("click", function() {
-        YAAW.tasks.selectCompleted();
-      });
       $("#btnStartAll").live("click", function() {
         ARIA2.unpause_all();
       });
@@ -101,7 +98,7 @@ var YAAW = (function() {
         ARIA2.pause_all();
       });
       $("#btnRemoveFinished").live("click", function() {
-        YAAW.tasks.removeCompleted();
+        ARIA2.purge_download_result();
       });
       $("#closeAdded").live("click", function() {
         $('#add-task-added').hide();
@@ -766,23 +763,6 @@ var YAAW = (function() {
         this.check_select();
       },
 
-      selectCompleted: function() {
-        var _this = this;
-        this.unSelectAll(true);
-        $("#stopped-tasks-table .task[data-status=complete]").each(function(i, n) {
-          _this.select(n);
-        });
-        this.check_select();
-      },
-
-      removeCompleted: function() {
-        var gids = [];
-        $("#stopped-tasks-table .task[data-status=complete]").each(function(i, n) {
-          gids.push(n.getAttribute("data-gid"));
-        });
-        if (gids.length) ARIA2.remove_result(gids);
-      },
-
       getSelectedGids: function() {
         var gids = [];
         $(".tasks-table .task.selected").each(function(i, n) {
@@ -816,10 +796,11 @@ var YAAW = (function() {
         var stopped_gids = [];
         $(".tasks-table .task.selected").each(function(i, n) {
           var status = n.getAttribute("data-status");
-          if (status == "paused")
+          if (status == "paused") {
             gids.push(n.getAttribute("data-gid"));
-          else if (status == "removed" || status == "error")
+          } else if (status == "removed" || status == "error") {
             stopped_gids.push(n.getAttribute("data-gid"));
+          }
         });
         if (gids.length) ARIA2.unpause(gids);
         if (stopped_gids.length) ARIA2.restart_task(stopped_gids);
