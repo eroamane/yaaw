@@ -131,7 +131,7 @@ body {
 }
 
 .task.selected {
-    background-color: #F9F9F9;
+    background-color: #F5F5F5;
 }
 .tasks-table > li {
     display: block;
@@ -144,7 +144,7 @@ body {
     vertical-align: top;
 }
 .tasks-table > li:hover {
-    background-color: #f5f5f5;
+    background-color: #F5F5F5;
 }
 
 .left-area {
@@ -190,6 +190,10 @@ body {
 }
 .task .progress {
     margin: 1px 0;
+    background: #DDD;
+}
+.task .progress .bar {
+    text-shadow: 0 0 3px #000, 0 0 1px #FFF;
 }
 
 .task .download-speed,
@@ -434,7 +438,7 @@ body {
     margin: 0 20px 20px;
     line-height: 10px;
     color: #DDD;
-    background-color: whiteSmoke;
+    background-color: #F5F5F5;
     cursor: pointer;
 }
 #uri-more:hover {
