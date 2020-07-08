@@ -19,16 +19,16 @@
  */
 
 html {
-    height: 100%;
+    min-height: 100%;
 }
 body {
     background-color: #EEE;
-    height: 100%;
+    min-height: 100%;
     padding: 0;
 }
 .container {
     width: unset;
-    height: 100%;
+    min-height: 100%;
     padding: 0 20px;
 }
 
@@ -99,6 +99,7 @@ body {
 /* active-tasks */
 #active-tasks {
     margin-top: 40px;
+    margin-bottom: 40px;
 }
 .empty-tasks {
     text-align: center;
@@ -115,6 +116,7 @@ body {
 /* other-tasks */
 #other-tasks {
     margin-top: 40px;
+    margin-bottom: 40px;
 }
 #waiting-tasks-table {
     margin-bottom: 0;
@@ -400,6 +402,10 @@ body {
     position: fixed;
     z-index: 99;
 }
+#task-contextmenu li > a {
+    user-select: none;
+    -moz-user-select: none;
+}
 
 /* add task modal */
 #add-task-modal {
@@ -421,7 +427,7 @@ body {
     padding-right: 118px;
 }
 #uri-input {
-    width: 100%;
+    width: 100%; 
 }
 #uri-textarea {
     box-sizing: border-box;
