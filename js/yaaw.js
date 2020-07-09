@@ -241,7 +241,7 @@ var YAAW = (function() {
             "select-file": indexes.join(","),
           };
           ARIA2.change_option($(this).parents(".info-box").attr("data-gid"), options);
-        }
+        };
       });
 
       $("#ib-options-a").live("click", function() {
@@ -290,18 +290,18 @@ var YAAW = (function() {
         holder.ondragover = function() {
           $(this).addClass("hover");
           return false;
-        };
+        }
         holder.ondragend = function() {
           $(this).removeClass("hover");
           return false;
-        };
+        }
         holder.ondrop = function(e) {
           $(this).removeClass("hover");
           e.preventDefault();
           var file = e.dataTransfer.files[0];
           YAAW.add_task.upload(file);
           return false;
-        };
+        }
 
         var container = $(".container").get(0);
         container.ondragover = function() {
@@ -320,7 +320,7 @@ var YAAW = (function() {
         tup.onchange = function(e) {
           var file = e.target.files[0];
           YAAW.add_task.upload(file);
-        };
+        }
       } else {
         $("#torrent-up-input").remove();
         $("#torrent-up-btn").addClass("disabled").tooltip({title: "File API is Not Supported."});
@@ -519,7 +519,7 @@ var YAAW = (function() {
               }
               return 'unknown';
             }
-          };
+          }
         },
 
         error_msg: function() {
@@ -764,7 +764,7 @@ var YAAW = (function() {
       },
 
       getSelectedGids: function() {
-        var gids = [];
+        var gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
           gids.push(n.getAttribute("data-gid"));
         });
@@ -772,7 +772,7 @@ var YAAW = (function() {
       },
 
       restart: function() {
-        var gids = [];
+        var gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
           var status = n.getAttribute("data-status");
           if (status == "removed" || status == "complete" || status == "error")
@@ -782,23 +782,23 @@ var YAAW = (function() {
       },
 
       pause: function() {
-        var gids = [];
+        var gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
-          var status = n.getAttribute("data-status");
-          if (status == "active" || status == "waiting")
+          if (n.getAttribute("data-status") == "active" ||
+              n.getAttribute("data-status") == "waiting")
             gids.push(n.getAttribute("data-gid"));
         });
         if (gids.length) ARIA2.pause(this.getSelectedGids());
       },
 
       unpause: function() {
-        var gids = [];
-        var stopped_gids = [];
+        var gids = new Array();
+        var stopped_gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
           var status = n.getAttribute("data-status");
           if (status == "paused") {
             gids.push(n.getAttribute("data-gid"));
-          } else if (status == "removed" || status == "error") {
+          } else if ("removed/error".indexOf(status) != -1) {
             stopped_gids.push(n.getAttribute("data-gid"));
           }
         });
@@ -807,11 +807,11 @@ var YAAW = (function() {
       },
 
       remove: function() {
-        var gids = [];
-        var remove_gids = [];
+        var gids = new Array();
+        var remove_list = ["active", "waiting", "paused"];
+        var remove_gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
-          var status = n.getAttribute("data-status");
-          if (status == "active" || status == "waiting" || status == "paused")
+          if (remove_list.indexOf(n.getAttribute("data-status")) != -1)
             remove_gids.push(n.getAttribute("data-gid"));
           else
             gids.push(n.getAttribute("data-gid"));
@@ -821,10 +821,10 @@ var YAAW = (function() {
       },
 
       movetop: function() {
-        var gids = [];
+        var gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
-          var status = n.getAttribute("data-status");
-          if (status == "waiting" || status == "paused")
+          if (n.getAttribute("data-status") == "waiting" ||
+              n.getAttribute("data-status") == "paused")
             gids.push(n.getAttribute("data-gid"));
         });
         gids.reverse();
@@ -832,20 +832,20 @@ var YAAW = (function() {
       },
 
       moveup: function() {
-        var gids = [];
+        var gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
-          var status = n.getAttribute("data-status");
-          if (status == "waiting" || status == "paused")
+          if (n.getAttribute("data-status") == "waiting" ||
+              n.getAttribute("data-status") == "paused")
             gids.push(n.getAttribute("data-gid"));
         });
         ARIA2.change_selected_pos(gids, -1, 'POS_CUR');
       },
 
       movedown: function() {
-        var gids = [];
+        var gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
-          var status = n.getAttribute("data-status");
-          if (status == "waiting" || status == "paused")
+          if (n.getAttribute("data-status") == "waiting" ||
+              n.getAttribute("data-status") == "paused")
             gids.push(n.getAttribute("data-gid"));
         });
         gids.reverse();
@@ -853,10 +853,10 @@ var YAAW = (function() {
       },
 
       moveend: function() {
-        var gids = [];
+        var gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
-          var status = n.getAttribute("data-status");
-          if (status == "waiting" || status == "paused")
+          if (n.getAttribute("data-status") == "waiting" ||
+              n.getAttribute("data-status") == "paused")
             gids.push(n.getAttribute("data-gid"));
         });
         ARIA2.change_selected_pos(gids, 0, 'POS_END');
@@ -923,7 +923,7 @@ var YAAW = (function() {
           var enteredElement = ev.toElement || ev.relatedTarget;
           if ($.contains(this, enteredElement) ||
               $("#task-contextmenu").get(0) == enteredElement ||
-              $.contains($("#task-contextmenu").get(0), enteredElement)) {
+                $.contains($("#task-contextmenu").get(0), enteredElement)) {
             return;
           }
           on_gid = null;
@@ -946,7 +946,7 @@ var YAAW = (function() {
       },
 
       restart: function() {
-        if (on_gid) ARIA2.restart_task(on_gid);
+        if (on_gid) ARIA2.restart_task([on_gid, ]);
         on_gid = null;
       },
 
@@ -1120,6 +1120,6 @@ var YAAW = (function() {
 
       return notification;
     },
-  };
+  }
 })();
 YAAW.init();
