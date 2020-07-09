@@ -29,7 +29,7 @@ body {
 .container {
     width: unset;
     min-height: 100%;
-    padding: 0 20px;
+    padding: 0 20px 40px;
 }
 
 .select-box {
@@ -99,7 +99,6 @@ body {
 /* active-tasks */
 #active-tasks {
     margin-top: 40px;
-    margin-bottom: 40px;
 }
 .empty-tasks {
     text-align: center;
@@ -116,7 +115,6 @@ body {
 /* other-tasks */
 #other-tasks {
     margin-top: 40px;
-    margin-bottom: 40px;
 }
 #waiting-tasks-table {
     margin-bottom: 0;
