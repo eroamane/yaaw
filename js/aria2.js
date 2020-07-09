@@ -58,7 +58,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     $("#main-alert .alert-msg").html(msg);
     $("#main-alert").data("msg_id", msg_id).show();
     if (timeout) {
-      window.setTimeout(function() {
+      window.setTimeout(function() { 
         if($("#main-alert").data("msg_id") == msg_id) {
           $("#main-alert").fadeOut();
         }
@@ -68,7 +68,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
   }
 
   function bind_event(dom) {
-    dom.find("[rel=tooltip]").tooltip({placement: "bottom", trigger: "hover"});
+    dom.find("[rel=tooltip]").tooltip({"placement": "bottom", trigger : 'hover'});
   }
 
   function get_title(result) {
@@ -93,7 +93,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           cnt += 1;
       }
       if (cnt > 1)
-        title += " ("+cnt+ " files..)";
+        title += " ("+cnt+ " files..)"
     }
     return title;
   }
@@ -107,7 +107,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
   return {
     init: function(path, onready) {
-      var connect_msg_id = main_alert("alert-info", "Connecting...");
+      var connect_msg_id = main_alert("alert-info", "connecting...");
       $("#add-task-option-wrap").empty().append(YAAW.tpl.add_task_option({}));
       $("#aria2-gsetting").empty().append(YAAW.tpl.aria2_global_setting({}));
 
@@ -128,7 +128,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           $("#main-alert").fadeOut();
         }
       } else if (jsonrpc_interface.indexOf("ws") == 0 && WebSocket) {
-        jsonrpc_protocol = "ws";
+        jsonrpc_protocol = "ws"
         jsonrpc_ws = new WebSocket(jsonrpc_interface);
         jsonrpc_ws.onmessage = function(event) {
           var data = JSON.parse(event.data);
@@ -146,8 +146,8 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
               else
                 ws_callback[data.id].success(data);
               delete ws_callback[data.id];
-            }
-          }
+            };
+          };
         };
         jsonrpc_ws.onerror = function(event) {
           console.warn("error", event);
@@ -164,7 +164,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         };
       } else {
         main_alert("alert-error", "Unknown protocol");
-      }
+      };
     },
 
     request: function(){},
@@ -184,7 +184,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     batch_request_http: function(method, params, success, error) {
       if (error == undefined)
         error = default_error;
-      var commands = [];
+      var commands = new Array();
       $.each(params, function(i, n) {
         n = n || [];
         if (!$.isArray(n)) n = [n];
@@ -201,7 +201,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         jsonrpc: '2.0',
         method: 'aria2.'+method,
         id: id
-      };
+      }
       if(typeof(params) !== 'undefined') {
         dataObj.params = params;
       }
@@ -241,8 +241,8 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         if (rpc_secret) {
           n.unshift(rpc_secret);
         }
-        data.push(ARIA2._request_data(method, n, id));
-      }
+        data.push(ARIA2._request_data(method, n, id))
+      };
       jsonrpc_ws.send(JSON.stringify(data));
     },
 
@@ -258,8 +258,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.refresh();
           $("#add-task-modal").modal('hide');
           YAAW.add_task.clean();
-          ARIA2.main_alert("alert-success", "Task added", 3000);
-        },
+        }, 
         function(result) {
           //console.debug(result);
 
@@ -277,13 +276,13 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       for (var i=0; i<uris.length; i++) {
         var uri = uris[i].trim();
         if (uri) params.push([[uri], options]);
-      }
+      };
       ARIA2.batch_request("addUri", params,
         function(result) {
           //console.debug(result);
 
-          var added = [];
-          var error = [];
+          var added = new Array();
+          var error = new Array();
           $.each(result, function(i, n) {
             var added_msg = get_added(n);
             if (added_msg) added.push(added_msg);
@@ -295,7 +294,6 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             ARIA2.refresh();
             $("#add-task-modal").modal('hide');
             YAAW.add_task.clean();
-            ARIA2.main_alert("alert-success", "Task added", 3000);
           } else {
             var error_msg = "<br />"+error.join("<br />");
             $("#add-task-alert .alert-msg").html(error_msg);
@@ -320,8 +318,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.refresh();
           $("#add-task-modal").modal('hide');
           YAAW.add_task.clean();
-          ARIA2.main_alert("alert-success", "Task added", 3000);
-        },
+        }, 
         function(result) {
           //console.debug(result);
 
@@ -342,8 +339,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.refresh();
           $("#add-task-modal").modal('hide');
           YAAW.add_task.clean();
-          ARIA2.main_alert("alert-success", "Task added", 3000);
-        },
+        }, 
         function(result) {
           //console.debug(result);
 
@@ -392,7 +388,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
           }
 
-          var snapshot = [];
+          var snapshot = new Array();
           $.each(result.result, function(i, e) {
             snapshot.push(e.gid);
           });
@@ -402,13 +398,13 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             if (auto_refresh && !select_lock)
               ARIA2.refresh();
           }
-
+        
           result = ARIA2.status_fix(result.result);
-          $("#active-tasks-table").empty().append(YAAW.tpl.active_task({tasks: result}));
+          $("#active-tasks-table").empty().append(YAAW.tpl.active_task({"tasks": result}));
           $.each(result, function(n, e) {
             $("#task-gid-"+e.gid).data("raw", e);
           });
-          bind_event($("#active-tasks-table"));
+          bind_event($("#active-tasks-table"))
         }
       );
     },
@@ -422,7 +418,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
           }
 
-          var snapshot = [];
+          var snapshot = new Array();
           $.each(result.result, function(i, e) {
             snapshot.push(e.gid);
           });
@@ -448,14 +444,14 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           }
 
           result = ARIA2.status_fix(result.result);
-          $("#waiting-tasks-table").empty().append(YAAW.tpl.other_task({tasks: result}));
+          $("#waiting-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result}));
           $.each(result, function(n, e) {
             $("#task-gid-"+e.gid).data("raw", e);
           });
-          bind_event($("#waiting-tasks-table"));
+          bind_event($("#waiting-tasks-table"))
 
           if ($("#other-tasks .task").length == 0)
-            $("#waiting-tasks-table").append($("#other-task-empty").text());
+            $("#waiting-tasks-table").append($("#other-task-empty").text())
         }
       );
     },
@@ -476,7 +472,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           result = ARIA2.status_fix(result.result);
 
           if (finished_tasks_list === undefined) {
-            finished_tasks_list = [];
+            finished_tasks_list = new Array();
             $.each(result, function(i, e) {
               if (e.status != "complete")
                 return;
@@ -495,11 +491,11 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             });
           }
 
-          $("#stopped-tasks-table").empty().append(YAAW.tpl.other_task({tasks: result.reverse()}));
+          $("#stopped-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result.reverse()}));
           $.each(result, function(n, e) {
             $("#task-gid-"+e.gid).data("raw", e);
           });
-          bind_event($("#stopped-tasks-table"));
+          bind_event($("#stopped-tasks-table"))
 
           if ($("#waiting-tasks-table .empty-tasks").length > 0 &&
             $("#stopped-tasks-table .task").length > 0) {
@@ -563,7 +559,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         function(result) {
           //console.debug(result);
 
-          var error = [];
+          var error = new Array();
           $.each(result, function(i, n) {
             var error_msg = get_error(n);
             if (error_msg) error.push(error_msg);
@@ -585,7 +581,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         function(result) {
           //console.debug(result);
 
-          var error = [];
+          var error = new Array();
           $.each(result, function(i, n) {
             var error_msg = get_error(n);
             if (error_msg) error.push(error_msg);
@@ -607,7 +603,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         function(result) {
           //console.debug(result);
 
-          var error = [];
+          var error = new Array();
           $.each(result, function(i, n) {
             var error_msg = get_error(n);
             if (error_msg) error.push(error_msg);
@@ -629,7 +625,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         function(result) {
           //console.debug(result);
 
-          var error = [];
+          var error = new Array();
           $.each(result, function(i, n) {
             var error_msg = get_error(n);
             if (error_msg) error.push(error_msg);
@@ -662,7 +658,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         function(result) {
           //console.debug(result);
 
-          main_alert("alert-info", "Option updated", 1000);
+          main_alert("alert-info", "option updated", 1000);
         }
       );
     },
@@ -729,7 +725,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
 
           result = result.result;
-          result["parameterized-uri"] = result["parameterized-uri"] == "true" ? true : false;
+          result["parameterized-uri"] = (result["parameterized-uri"] == "true" ? true : false)
           $("#add-task-option-wrap").empty().append(YAAW.tpl.add_task_option(result));
         }
       );
@@ -806,7 +802,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                 }
               }
             }
-          }
+          };
           console.log(result.uris);
           $("#ib-status").empty().append(YAAW.tpl.ib_status(result));
           $("#ib-files .file-list").empty().append(YAAW.tpl.files_tree(result.files));
@@ -851,7 +847,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         window.clearInterval(interval_id);
       if (!(interval > 0)) {
         auto_refresh = false;
-        return;
+        return ;
       }
       interval_id = window.setInterval(function() {
         ARIA2.global_stat();
@@ -871,5 +867,5 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     },
 
     finish_notification: 1,
-  };
+  }
 })();
