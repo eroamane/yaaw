@@ -177,6 +177,9 @@ body {
     font-weight: bold;
 }
 
+.task .task-name .select-box {
+    flex-shrink: 0;
+}
 .task:hover .select-box {
     border-color: #666;
 }
@@ -550,4 +553,4 @@ body {
     margin-left: 130px;
 }
 
-/* vim: set et sw=4 ts=4 sts=4 fdm=marker ff=unix fenc=utf8: */ 
+/* vim: set et sw=4 ts=4 sts=4 fdm=marker ff=unix fenc=utf8: */
