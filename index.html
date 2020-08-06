@@ -46,7 +46,7 @@
       <div class="clearfix hide" id="main-control">
         <div id="main-alert" class="hide">
           <div id="main-alert-inline" class="alert">
-            <a href="#" id="btnClearAlert"  class="close">×</a>
+            <a id="btnClearAlert"  class="close">×</a>
             <span class="alert-msg">Loading</span>
           </div>
         </div>
@@ -56,27 +56,27 @@
             <button id="select-all-btn" class="btn" rel="tooltip" title="Select All">
               <i class="select-box"></i>
             </button>
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            <a class="btn dropdown-toggle" data-toggle="dropdown">
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="#" id="btnSelectActive" >Select Active</a></li>
-              <li><a href="#" id="btnSelectWaiting">Select Waiting</a></li>
-              <li><a href="#" id="btnSelectPaused" >Select Paused</a></li>
-              <li><a href="#" id="btnSelectStopped" >Select Stopped</a></li>
+              <li><a id="btnSelectActive" >Select Active</a></li>
+              <li><a id="btnSelectWaiting">Select Waiting</a></li>
+              <li><a id="btnSelectPaused" >Select Paused</a></li>
+              <li><a id="btnSelectStopped" >Select Stopped</a></li>
             </ul>
           </div>
         </div>
 
         <div class="pull-left" id="not-selected-grp">
           <div class="pull-left btn-group">
-            <a href="#" id="btnStartAll" class="btn" id="unpause-all" rel="tooltip" title="Start All">
+            <a id="btnStartAll" class="btn" id="unpause-all" rel="tooltip" title="Start All">
               <i class="icon-forward"></i>
             </a>
-            <a href="#" id="btnPauseAll"  class="btn" id="pause-all" rel="tooltip" title="Pause All">
+            <a id="btnPauseAll"  class="btn" id="pause-all" rel="tooltip" title="Pause All">
               <i class="icon-stop"></i>
             </a>
-            <a href="#" id="btnRemoveFinished"  class="btn" id="pure-all" rel="tooltip" title="Remove Finished Tasks">
+            <a id="btnRemoveFinished"  class="btn" id="pure-all" rel="tooltip" title="Remove Finished Tasks">
               <i class="icon-trash"></i>
             </a>
           </div>
@@ -89,13 +89,13 @@
 
         <div class="pull-left hide" id="selected-grp">
           <div class="pull-left btn-group">
-            <a href="#" id="btnUnPause" class="btn" rel="tooltip" title="Start">
+            <a id="btnUnPause" class="btn" rel="tooltip" title="Start">
               <i class="icon-play"></i>
             </a>
-            <a href="#" id="btnPause"   class="btn" rel="tooltip" title="Pause">
+            <a id="btnPause"   class="btn" rel="tooltip" title="Pause">
               <i class="icon-pause"></i>
             </a>
-            <a href="#" id="btnRemove"  class="btn" rel="tooltip" title="Remove">
+            <a id="btnRemove"  class="btn" rel="tooltip" title="Remove">
               <i class="icon-remove"></i>
             </a>
           </div>
@@ -108,7 +108,7 @@
 
         <div class="pull-right" id="other-grp">
           <div class="btn-group">
-            <a href="#" class="btn" id="refresh-btn" rel="tooltip" title="Refresh">
+            <a class="btn" id="refresh-btn" rel="tooltip" title="Refresh">
               <i class="icon-refresh"></i> Refresh
             </a>
             <a class="btn" id="setting-btn" data-toggle="modal" href="#setting-modal" rel="tooltip" title="Settings">
@@ -165,11 +165,11 @@
     </div>
     <div class="modal-body">
       <div id="add-task-added" class="alert alert-success hide">
-        <a href="#" id="closeAdded" class="close">×</a>
+        <a id="closeAdded" class="close">×</a>
         <strong>Added:</strong> <span class="alert-msg"></span>
       </div>
       <div id="add-task-alert" class="alert alert-error hide">
-        <a href="#" id="closeAlert"  class="close">×</a>
+        <a id="closeAlert"  class="close">×</a>
         <strong>Error:</strong> <span class="alert-msg"></span>
       </div>
       <form id="add-task-uri" class="form-horizontal">
@@ -182,8 +182,8 @@
       <div id="add-task-option-wrap"></div>
     </div>
     <div class="modal-footer">
-      <a href="#" id="add-task-submit" class="btn btn-primary">Add</a>
-      <a href="#" id="add-task-clear" class="btn" data-dismiss="modal">Cancel</a>
+      <a id="add-task-submit" class="btn btn-primary">Add</a>
+      <a id="add-task-clear" class="btn" data-dismiss="modal">Cancel</a>
     </div>
     </section>
 
@@ -199,7 +199,7 @@
             <label class="control-label" for="rpc-path">JSON-RPC Path</label>
             <div class="controls">
               <div class="input-append btn-group rpc-path-wrap">
-                <input type="text" class="input-xlarge" id="rpc-path"><a class="add-on btn dropdown-toggle" href="#" disabled><b class="caret"></b></a>
+                <input type="text" class="input-xlarge" id="rpc-path"><a class="add-on btn dropdown-toggle" disabled><b class="caret"></b></a>
               </div>
             </div>
           </div>
@@ -241,8 +241,8 @@
     </div>
     <div class="modal-footer">
       <div id="copyright">© Copyright <a href="https://github.com/binux/yaaw">Binux</a></div>
-      <a href="#" id="saveSettings"  class="btn btn-success">Save</a>
-      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+      <a id="saveSettings"  class="btn btn-success">Save</a>
+      <a class="btn" data-dismiss="modal">Cancel</a>
     </div>
     </section>
     
