@@ -18,24 +18,26 @@
  *
  */
 
-html {
-    min-height: 100%;
+html, body {
+    height: 100%;
 }
 body {
     background-color: #EEE;
-    min-height: 100%;
     padding: 0;
 }
 .container {
     width: unset;
     min-height: 100%;
-    padding: 0 20px 40px;
+    padding: 0 20px;
 }
 
 .select-box {
     cursor: pointer;
     user-select: none;
     -moz-user-select: none;
+}
+.dropdown-menu a {
+    cursor: pointer;
 }
 .btn-inline {
     /* fix for MAC/chrome */
@@ -99,6 +101,7 @@ body {
 /* active-tasks */
 #active-tasks {
     margin-top: 40px;
+    margin-bottom: 40px;
 }
 .empty-tasks {
     text-align: center;
@@ -115,6 +118,7 @@ body {
 /* other-tasks */
 #other-tasks {
     margin-top: 40px;
+    margin-bottom: 40px;
 }
 #waiting-tasks-table {
     margin-bottom: 0;
@@ -139,7 +143,7 @@ body {
     margin-top: -1px;
     border-top: 1px solid #DDD;
     border-bottom: 1px solid #DDD;
-    line-height: 18px;
+    line-height: 20px;
     text-align: left;
     vertical-align: top;
 }
@@ -163,6 +167,8 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
 }
 .task .task-name span {
     word-break: break-all;
@@ -171,9 +177,6 @@ body {
     font-weight: bold;
 }
 
-.task .task-name .select-box {
-    vertical-align: -15%;
-}
 .task:hover .select-box {
     border-color: #666;
 }
@@ -182,18 +185,17 @@ body {
     margin-right: 8px;
 }
 
-.task .task-info {
-    margin-top: 4px;
-}
+.task .task-info,
 .task .progress-info {
-    margin-top: 5px;
+    margin-top: 4px;
+    display: inline-block;
 }
 .task .progress {
     margin: 1px 0;
     background: #DDD;
 }
 .task .progress .bar {
-    text-shadow: 0 0 3px #000, 0 0 1px #FFF;
+    text-shadow: 0 0 3px #000, 0 0 2px #000, 0 0 1px #FFF;
 }
 
 .task .download-speed,
@@ -357,7 +359,6 @@ body {
     line-height: 14px;
     padding-bottom: 6px;
     vertical-align: top;
-    border-bottom: 1px solid #FFF;
 }
 #ib-files .ib-file-title:hover {
     border-bottom: 1px solid #666;
@@ -395,14 +396,9 @@ body {
 }
 
 /* task-contextmenu */
-
 #task-contextmenu {
     position: fixed;
     z-index: 99;
-}
-#task-contextmenu li > a {
-    user-select: none;
-    -moz-user-select: none;
 }
 
 /* add task modal */
@@ -527,10 +523,10 @@ body {
     right: 1px;
 }
 #rpc-path {
-  width: 100%;
-  height: 28px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
+    width: 100%;
+    height: 28px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 #aria2-gs-form {
     margin-right: 30px;
