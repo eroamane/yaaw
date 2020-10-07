@@ -258,6 +258,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.refresh();
           $("#add-task-modal").modal('hide');
           YAAW.add_task.clean();
+          ARIA2.main_alert("alert-success", "Task added", 3000);
         }, 
         function(result) {
           //console.debug(result);
@@ -294,6 +295,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             ARIA2.refresh();
             $("#add-task-modal").modal('hide');
             YAAW.add_task.clean();
+            ARIA2.main_alert("alert-success", "Task added", 3000);
           } else {
             var error_msg = "<br />"+error.join("<br />");
             $("#add-task-alert .alert-msg").html(error_msg);
@@ -318,14 +320,19 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.refresh();
           $("#add-task-modal").modal('hide');
           YAAW.add_task.clean();
+          ARIA2.main_alert("alert-success", "Task added", 3000);
         }, 
         function(result) {
           //console.debug(result);
 
           var error_msg = get_error(result);
 
-          $("#add-task-alert .alert-msg").text(error_msg);
-          $("#add-task-alert").show();
+          if ($("#add-task-modal").hasClass("in")) {
+            $("#add-task-alert .alert-msg").text(error_msg);
+            $("#add-task-alert").show();
+          } else {
+            ARIA2.main_alert("alert-error", "add task error: "+error_msg, 5000);
+          }
           console.warn("add task error: "+error_msg);
         });
     },
@@ -339,14 +346,19 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.refresh();
           $("#add-task-modal").modal('hide');
           YAAW.add_task.clean();
+          ARIA2.main_alert("alert-success", "Task added", 3000);
         }, 
         function(result) {
           //console.debug(result);
 
           var error_msg = get_error(result);
 
-          $("#add-task-alert .alert-msg").text(error_msg);
-          $("#add-task-alert").show();
+          if($("#add-task-alert").hasClass("in")) {
+            $("#add-task-alert .alert-msg").text(error_msg);
+            $("#add-task-alert").show();
+          } else {
+            ARIA2.main_alert("alert-error", "add task error: "+error_msg, 5000);
+          }
           console.warn("add task error: "+error_msg);
         });
     },
